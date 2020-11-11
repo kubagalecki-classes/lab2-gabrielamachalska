@@ -15,6 +15,11 @@ class ResourceManager
 	ResourceManager(Resource* other){
 		resource = other;
 	}
+	ResourceManager(const Resource& other){
+		*resource = other;
+	}
+	   ResourceManager& operator=(const Resource& t) { *resource = t ; return *this; }
+
 
 		double get() {
 			return resource -> get();
