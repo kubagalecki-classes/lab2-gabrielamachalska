@@ -13,9 +13,11 @@ class ResourceManager
 	resource = new Resource();
 	}
 	ResourceManager(Resource* other){
+		delete resource;
 		resource = other;
 	}
 	ResourceManager(const Resource& other){
+		delete resource;
 		*resource = other;
 	}
 	   ResourceManager& operator=(const Resource& t) { *resource = t ; return *this; }
