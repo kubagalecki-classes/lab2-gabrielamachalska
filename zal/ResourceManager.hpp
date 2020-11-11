@@ -4,12 +4,6 @@
 
 class ResourceManager
 {
-#pragma once
-
-#include "Resource.hpp"
-
-class ResourceManager
-{
 	private:
 		Resource* resource;
 
@@ -17,6 +11,9 @@ class ResourceManager
 	ResourceManager()
 	{
 	resource = new Resource();
+	}
+	ResourceManager(Resource* other){
+		resource = other;
 	}
 
 		double get() {
