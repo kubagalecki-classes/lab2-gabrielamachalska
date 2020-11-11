@@ -5,30 +5,36 @@
 class ResourceManager
 {
 	private:
-		Resource* resource;
+		std::unique_ptr<Resource> resource;
 
 	public:
 	ResourceManager()
+		: resource{ std::make_unique<Resource>() }
 	{
-	resource = new Resource();
 	}
-	ResourceManager(Resource* other){
-		delete resource;
-		resource = other;
+
+	ResourceManager(Resource* other)
+	{
+		resource.reset(other);
 	}
-	ResourceManager(const Resource& other){
-		delete resource;
-		*resource = other;
+
+ResourceManager(Resource &&other)
+	{
+		resource.reset(std::move(&other));
 	}
-	   ResourceManager& operator=(const Resource& t) { *resource = t ; return *this; }
-
-
-		double get() {
-			return resource -> get();
-	};
-
 	
-	~ResourceManager(){
-		delete resource;
+	~ResourceManager() = default;
+
+
+	ResourceManager& operator=(const Resource& t)
+	{
+		*resource = t;
+		return *this;
+	}
+
+	double get()
+	{
+		assert(resource);
+		return resource->get();
 	}
 };
