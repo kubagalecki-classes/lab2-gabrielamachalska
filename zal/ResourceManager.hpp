@@ -1,47 +1,52 @@
 #pragma once
 
+#include <memory>
+
 #include "Resource.hpp"
 
 class ResourceManager
 {
-	private:
-		Resource* resource;
+public:
+    ResourceManager()
+        : resource(std::make_shared<Resource>())
+    {
+    }
 
-	public:
-	ResourceManager()
-	{
-	resource = new Resource();
-	}
-	ResourceManager(Resource* other){
-		delete resource;
-		resource = other;
-	}
-	ResourceManager(const Resource& other){
-		delete resource;
-		*resource = other;
-	}
-	   ResourceManager& operator=(const Resource& t) { *resource = t ; return *this; }
-		ResourceManager& operator=(Resource &&other) { *resource = other; return *this;}
+    ResourceManager(const ResourceManager &other)
+        : resource(other.resource)
+    {
+    }
 
+    ResourceManager(ResourceManager &&other)
+        : resource(std::move(other.resource))
+    {
+    }
 
+    ResourceManager& operator=(const ResourceManager &other)
+    {
+        if(&other != this)
+        {
+            resource = other.resource;
+        }
 
+        return *this;
+    }
 
-	   ResourceManager(Resource &&other)
-	{
-		delete resource;
-		*resource = other;
-	}
+    ResourceManager& operator=(ResourceManager &&other)
+    {
+        if(&other != this)
+        {
+            resource = std::move(other.resource);
+        }
 
+        return *this;
+    }
 
+    double get()
+    {
+        return resource->get();
+    }
 
-
-
-		double get() {
-			return resource -> get();
-	};
-
-	
-	~ResourceManager(){
-		delete resource;
-	}
+private:
+    std::shared_ptr<Resource> resource;
 };
